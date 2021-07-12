@@ -15,7 +15,7 @@ import { getAccessToken, setAccessToken } from "./accessToken";
 
 const httpLink = createHttpLink({
   uri:
-    process.env.NODE_ENV === "production"
+    process.env.NODE_ENV === "development"
       ? "http://localhost:4000/graphql"
       : "https://nsp-backend.herokuapp.com/graphql",
   credentials: "include",
@@ -56,7 +56,7 @@ const tokenRefreshLink = new TokenRefreshLink({
   },
   fetchAccessToken: () => {
     return fetch(
-      process.env.NODE_ENV === "production"
+      process.env.NODE_ENV === "development"
         ? "http://localhost:4000/refresh_token"
         : "https://nsp-backend.herokuapp.com/refresh_token",
       {
