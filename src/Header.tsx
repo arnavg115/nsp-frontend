@@ -18,6 +18,7 @@ export const Header = () => {
 
   return (
     <header>
+      <p>{process.env.REACT_APP_BACKEND}</p>
       <div>
         <Link to="/">Home</Link>
       </div>
