@@ -1,0 +1,3 @@
+mutation addOneArticle($Edition_Num: Int!, $desc: String!, $name: String!) {
+  addOneArticle(Edition_Num: $Edition_Num, desc: $desc, name: $name)
+}

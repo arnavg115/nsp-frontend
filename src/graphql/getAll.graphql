@@ -1,0 +1,11 @@
+query getAll {
+  getAll {
+    num
+    name
+    articles {
+      name
+      desc
+      href
+    }
+  }
+}

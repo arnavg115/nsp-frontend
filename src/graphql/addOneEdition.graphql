@@ -1,0 +1,3 @@
+mutation addOneEdition($name: String!, $num: Int!) {
+  addOneEdition(name: $name, num: $num)
+}
