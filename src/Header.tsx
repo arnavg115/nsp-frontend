@@ -6,7 +6,6 @@ import { setAccessToken } from "./accessToken";
 export const Header = () => {
   const { loading, data } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
-
   let body: any = null;
 
   if (loading) {

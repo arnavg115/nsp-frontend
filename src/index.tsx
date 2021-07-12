@@ -14,10 +14,7 @@ import { App } from "./App";
 import { getAccessToken, setAccessToken } from "./accessToken";
 
 const httpLink = createHttpLink({
-  uri:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:4000/graphql"
-      : "https://nsp-backend.herokuapp.com/graphql",
+  uri: process.env.REACT_APP_BACKEND + "/graphql",
   credentials: "include",
 });
 
@@ -55,15 +52,10 @@ const tokenRefreshLink = new TokenRefreshLink({
     }
   },
   fetchAccessToken: () => {
-    return fetch(
-      process.env.NODE_ENV === "development"
-        ? "http://localhost:4000/refresh_token"
-        : "https://nsp-backend.herokuapp.com/refresh_token",
-      {
-        method: "POST",
-        credentials: "include",
-      }
-    );
+    return fetch(process.env.REACT_APP_BACKEND + "/refresh_token", {
+      method: "POST",
+      credentials: "include",
+    });
   },
   handleFetch: (accessToken) => {
     setAccessToken(accessToken);
