@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { Routes } from "./Routes";
 import { setAccessToken } from "./accessToken";
+import { Spinner } from "react-bootstrap";
 
 export const App = () => {
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,11 @@ export const App = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
   }
 
   return <Routes />;

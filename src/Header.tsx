@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useMeQuery, useLogoutMutation } from "./generated/graphql";
 import { setAccessToken } from "./accessToken";
-
+import { Navbar, Nav, Button, NavDropdown, Container } from "react-bootstrap";
 export const Header = () => {
   const { loading, data } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
@@ -11,36 +11,45 @@ export const Header = () => {
   if (loading) {
     body = null;
   } else if (data?.me) {
-    body = <div>You are logged in as {data.me.username}</div>;
+    body = (
+      <Navbar.Text>
+        You are logged in as <strong>{data.me.username}</strong>
+      </Navbar.Text>
+    );
   } else {
-    body = <div>Not logged in</div>;
+    body = <Navbar.Text>Not logged in</Navbar.Text>;
   }
 
   return (
-    <header>
-      <div>
-        <Link to="/">Home</Link>
-      </div>
-      <div>
-        <Link to="/register">Register</Link>
-      </div>
-      <div>
-        <Link to="/login">Login</Link>
-      </div>
-      {!loading && data?.me ? (
-        <div>
-          <button
-            onClick={async () => {
-              await logout();
-              setAccessToken("");
-              await client?.resetStore();
-            }}
-          >
-            Logout
-          </button>
-        </div>
-      ) : null}
-      {body}
-    </header>
+    <Navbar bg="dark" expand="lg" variant="dark">
+      <Container>
+        <Navbar.Brand href="/">NSP-Admin Dashboard</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          {!loading && data?.me ? (
+            <Nav>
+              <Nav.Link href="/addedition">Add Edition</Nav.Link>
+              <Nav.Link href="/manageemails">Manage Emails</Nav.Link>
+              <Button
+                variant="outline-danger"
+                onClick={async () => {
+                  await logout();
+                  setAccessToken("");
+                  await client?.resetStore();
+                }}
+              >
+                Logout
+              </Button>
+            </Nav>
+          ) : (
+            <Nav className="me-auto">
+              <Nav.Link href="/login">Login</Nav.Link>
+              <Nav.Link href="/register">Register</Nav.Link>
+            </Nav>
+          )}
+        </Navbar.Collapse>
+        {body}
+      </Container>
+    </Navbar>
   );
 };

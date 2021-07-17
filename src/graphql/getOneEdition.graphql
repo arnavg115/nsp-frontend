@@ -1,0 +1,13 @@
+query getOne($index: Int!) {
+  getOneEdition(index: $index) {
+    id
+    name
+    num
+    articles {
+      id
+      name
+      desc
+      href
+    }
+  }
+}

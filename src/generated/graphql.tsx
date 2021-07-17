@@ -17,7 +17,19 @@ export type Query = {
   hello: Scalars['String'];
   me?: Maybe<User>;
   getAll: Array<Edition>;
+  getOneEdition: Edition;
+  getSearch: Array<Edition>;
   getAllEmails: Array<Email>;
+};
+
+
+export type QueryGetOneEditionArgs = {
+  index: Scalars['Int'];
+};
+
+
+export type QueryGetSearchArgs = {
+  query: Scalars['String'];
 };
 
 export type User = {
@@ -55,6 +67,8 @@ export type Mutation = {
   register: Scalars['Boolean'];
   addOneEdition: Scalars['Boolean'];
   addOneArticle: Scalars['Boolean'];
+  deleteEdition: Scalars['Boolean'];
+  deleteArticle: Scalars['Boolean'];
   addEmail: Scalars['Boolean'];
   DeleteEmail: Scalars['Boolean'];
 };
@@ -83,6 +97,16 @@ export type MutationAddOneArticleArgs = {
   Edition_Num: Scalars['Int'];
   desc: Scalars['String'];
   name: Scalars['String'];
+};
+
+
+export type MutationDeleteEditionArgs = {
+  id: Scalars['Int'];
+};
+
+
+export type MutationDeleteArticleArgs = {
+  id: Scalars['Int'];
 };
 
 
@@ -134,6 +158,26 @@ export type AddEmailMutation = (
   & Pick<Mutation, 'addEmail'>
 );
 
+export type DeleteArticleMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteArticleMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteArticle'>
+);
+
+export type DeleteOneEditionMutationVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type DeleteOneEditionMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteEdition'>
+);
+
 export type GetAllQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -158,6 +202,23 @@ export type GetAllEmailsQuery = (
     { __typename?: 'Email' }
     & Pick<Email, 'email'>
   )> }
+);
+
+export type GetOneQueryVariables = Exact<{
+  index: Scalars['Int'];
+}>;
+
+
+export type GetOneQuery = (
+  { __typename?: 'Query' }
+  & { getOneEdition: (
+    { __typename?: 'Edition' }
+    & Pick<Edition, 'id' | 'name' | 'num'>
+    & { articles: Array<(
+      { __typename?: 'Article' }
+      & Pick<Article, 'id' | 'name' | 'desc' | 'href'>
+    )> }
+  ) }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -313,6 +374,66 @@ export function useAddEmailMutation(baseOptions?: ApolloReactHooks.MutationHookO
 export type AddEmailMutationHookResult = ReturnType<typeof useAddEmailMutation>;
 export type AddEmailMutationResult = ApolloReactCommon.MutationResult<AddEmailMutation>;
 export type AddEmailMutationOptions = ApolloReactCommon.BaseMutationOptions<AddEmailMutation, AddEmailMutationVariables>;
+export const DeleteArticleDocument = gql`
+    mutation deleteArticle($id: Int!) {
+  deleteArticle(id: $id)
+}
+    `;
+export type DeleteArticleMutationFn = ApolloReactCommon.MutationFunction<DeleteArticleMutation, DeleteArticleMutationVariables>;
+
+/**
+ * __useDeleteArticleMutation__
+ *
+ * To run a mutation, you first call `useDeleteArticleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteArticleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteArticleMutation, { data, loading, error }] = useDeleteArticleMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteArticleMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteArticleMutation, DeleteArticleMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteArticleMutation, DeleteArticleMutationVariables>(DeleteArticleDocument, baseOptions);
+      }
+export type DeleteArticleMutationHookResult = ReturnType<typeof useDeleteArticleMutation>;
+export type DeleteArticleMutationResult = ApolloReactCommon.MutationResult<DeleteArticleMutation>;
+export type DeleteArticleMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteArticleMutation, DeleteArticleMutationVariables>;
+export const DeleteOneEditionDocument = gql`
+    mutation deleteOneEdition($id: Int!) {
+  deleteEdition(id: $id)
+}
+    `;
+export type DeleteOneEditionMutationFn = ApolloReactCommon.MutationFunction<DeleteOneEditionMutation, DeleteOneEditionMutationVariables>;
+
+/**
+ * __useDeleteOneEditionMutation__
+ *
+ * To run a mutation, you first call `useDeleteOneEditionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOneEditionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOneEditionMutation, { data, loading, error }] = useDeleteOneEditionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteOneEditionMutation(baseOptions?: ApolloReactHooks.MutationHookOptions<DeleteOneEditionMutation, DeleteOneEditionMutationVariables>) {
+        return ApolloReactHooks.useMutation<DeleteOneEditionMutation, DeleteOneEditionMutationVariables>(DeleteOneEditionDocument, baseOptions);
+      }
+export type DeleteOneEditionMutationHookResult = ReturnType<typeof useDeleteOneEditionMutation>;
+export type DeleteOneEditionMutationResult = ApolloReactCommon.MutationResult<DeleteOneEditionMutation>;
+export type DeleteOneEditionMutationOptions = ApolloReactCommon.BaseMutationOptions<DeleteOneEditionMutation, DeleteOneEditionMutationVariables>;
 export const GetAllDocument = gql`
     query getAll {
   getAll {
@@ -383,6 +504,47 @@ export function useGetAllEmailsLazyQuery(baseOptions?: ApolloReactHooks.LazyQuer
 export type GetAllEmailsQueryHookResult = ReturnType<typeof useGetAllEmailsQuery>;
 export type GetAllEmailsLazyQueryHookResult = ReturnType<typeof useGetAllEmailsLazyQuery>;
 export type GetAllEmailsQueryResult = ApolloReactCommon.QueryResult<GetAllEmailsQuery, GetAllEmailsQueryVariables>;
+export const GetOneDocument = gql`
+    query getOne($index: Int!) {
+  getOneEdition(index: $index) {
+    id
+    name
+    num
+    articles {
+      id
+      name
+      desc
+      href
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOneQuery__
+ *
+ * To run a query within a React component, call `useGetOneQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOneQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOneQuery({
+ *   variables: {
+ *      index: // value for 'index'
+ *   },
+ * });
+ */
+export function useGetOneQuery(baseOptions?: ApolloReactHooks.QueryHookOptions<GetOneQuery, GetOneQueryVariables>) {
+        return ApolloReactHooks.useQuery<GetOneQuery, GetOneQueryVariables>(GetOneDocument, baseOptions);
+      }
+export function useGetOneLazyQuery(baseOptions?: ApolloReactHooks.LazyQueryHookOptions<GetOneQuery, GetOneQueryVariables>) {
+          return ApolloReactHooks.useLazyQuery<GetOneQuery, GetOneQueryVariables>(GetOneDocument, baseOptions);
+        }
+export type GetOneQueryHookResult = ReturnType<typeof useGetOneQuery>;
+export type GetOneLazyQueryHookResult = ReturnType<typeof useGetOneLazyQuery>;
+export type GetOneQueryResult = ApolloReactCommon.QueryResult<GetOneQuery, GetOneQueryVariables>;
 export const LoginDocument = gql`
     mutation Login($username: String!, $password: String!) {
   login(username: $username, password: $password) {

@@ -1,0 +1,3 @@
+mutation deleteOneEdition($id: Int!) {
+  deleteEdition(id: $id)
+}

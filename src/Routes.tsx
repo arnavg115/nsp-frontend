@@ -7,6 +7,7 @@ import { Header } from "./Header";
 import { FourZeroFour } from "./pages/FourZeroFour";
 import { AddEdition } from "./pages/AddEdition";
 import { ManageEmails } from "./pages/ManageEmails";
+import { ViewEditions } from "./pages/ViewEdition";
 
 export const Routes = () => {
   return (
@@ -19,6 +20,7 @@ export const Routes = () => {
           <Route path="/" component={Home} exact />
           <Route path="/addedition" component={AddEdition} exact />
           <Route path="/manageemails" component={ManageEmails} exact />
+          <Route path="/view/:id" component={ViewEditions} exact />
           <Route path="*" component={FourZeroFour} />
         </Switch>
       </div>

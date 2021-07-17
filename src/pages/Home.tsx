@@ -1,4 +1,6 @@
 import React from "react";
+import { Card, ListGroup, Spinner } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useGetAllQuery } from "../generated/graphql";
 
 interface Props {}
@@ -6,27 +8,48 @@ interface Props {}
 export const Home: React.FC<Props> = () => {
   const { data, loading, error } = useGetAllQuery();
   if (loading) {
-    return <p>Loading</p>;
+    return <Spinner animation="border" variant="primary" />;
   } else if (!data || !data.getAll || error?.message) {
     return <p>Error:{error?.message}</p>;
   }
   return (
-    <div>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: "10px",
+        padding: "10px",
+      }}
+    >
+      <style>
+        {`
+          a{
+            text-decoration: none;
+          }
+        `}
+      </style>
       {data.getAll.map((x) => {
         return (
-          <div>
-            <h1>
-              {x.num}:{x.name}
-            </h1>
-            {x.articles.map((y) => {
-              return (
-                <div>
-                  <h2>{y.name}</h2>
-                  <p>{y.desc}</p>
-                </div>
-              );
-            })}
-          </div>
+          <Link to={`/view/${x.num}`}>
+            <Card>
+              <Card.Body>
+                <Card.Title>{x.name}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">
+                  Articles
+                </Card.Subtitle>
+                <ListGroup>
+                  {x.articles.map((y) => {
+                    return (
+                      <ListGroup.Item>
+                        <p>{y.name}</p>
+                        <p className="text-muted">{y.desc}</p>
+                      </ListGroup.Item>
+                    );
+                  })}
+                </ListGroup>
+              </Card.Body>
+            </Card>
+          </Link>
         );
       })}
     </div>
