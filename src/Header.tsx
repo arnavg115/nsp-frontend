@@ -1,8 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { useMeQuery, useLogoutMutation } from "./generated/graphql";
 import { setAccessToken } from "./accessToken";
-import { Navbar, Nav, Button, NavDropdown, Container } from "react-bootstrap";
+import { Navbar, Nav, Button, Container } from "react-bootstrap";
 export const Header = () => {
   const { loading, data } = useMeQuery();
   const [logout, { client }] = useLogoutMutation();
