@@ -5,6 +5,7 @@ import {
   useAddEmailMutation,
   useDeleteEmailMutation,
   useGetAllEmailsQuery,
+  useMeQuery,
 } from "../generated/graphql";
 
 export const ManageEmails: FC<RouteComponentProps> = ({ history }) => {
@@ -15,12 +16,16 @@ export const ManageEmails: FC<RouteComponentProps> = ({ history }) => {
   const [email, setEmail] = useState("");
   const [otherm, setOtherm] = useState("");
   const openM = () => setOpen(true);
+  const res = useMeQuery();
   const closeM = () => {
     setOpen(false);
     setOtherm("");
   };
-  if (loading) {
+  if (res.loading || loading) {
     return <p>Loading</p>;
+  } else if (!res.data || !res.data.me || res.error) {
+    history.push("/login");
+    return <p>Redirecting</p>;
   } else if (error) {
     return <p>Error</p>;
   }

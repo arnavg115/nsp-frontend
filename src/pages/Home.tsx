@@ -1,16 +1,17 @@
 import React from "react";
 import { Card, ListGroup, Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useGetAllQuery } from "../generated/graphql";
+import { Link, RouteComponentProps } from "react-router-dom";
+import { useGetAllQuery, useMeQuery } from "../generated/graphql";
 
-interface Props {}
-
-export const Home: React.FC<Props> = () => {
+export const Home: React.FC<RouteComponentProps> = ({ history }) => {
   const { data, loading, error } = useGetAllQuery();
-  if (loading) {
+  const res = useMeQuery();
+  if (loading || res.loading) {
     return <Spinner animation="border" variant="primary" />;
   } else if (!data || !data.getAll || error?.message) {
     return <p>Error:{error?.message}</p>;
+  } else if (!res.data || !res.data.me) {
+    history.push("/login");
   }
   return (
     <div

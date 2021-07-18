@@ -3,6 +3,7 @@ import {
   MeDocument,
   MeQuery,
   useLoginMutation,
+  useMeQuery,
   useRegisterMutation,
 } from "../generated/graphql";
 import { RouteComponentProps } from "react-router-dom";
@@ -15,6 +16,12 @@ export const Register: React.FC<RouteComponentProps> = ({ history }) => {
   const [adminPass, setAdminPass] = useState("");
   const [register] = useRegisterMutation();
   const [login] = useLoginMutation();
+  const res = useMeQuery();
+  if (res.loading) {
+    return <p>Loading</p>;
+  } else if (res.data && res.data.me) {
+    history.push("/");
+  }
   return (
     <div
       style={{
